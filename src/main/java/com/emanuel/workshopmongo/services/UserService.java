@@ -1,5 +1,6 @@
 package com.emanuel.workshopmongo.services;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,7 +39,20 @@ public class UserService {
 		repository.deleteById(id);
 	}
 	
+	public User update(String id, User obj) {
+		User entity = repository.findById(id)
+				.orElseThrow(() -> new ObjectNotFoundException(id));
+		update(entity, obj);
+		return repository.save(entity);
+	}
 	
+	
+	private void update(User entity, User obj) {
+		entity.setName(obj.getName());
+		entity.setEmail(obj.getEmail());
+		
+	}
+
 	public User fromDTO(UserDTO objDto) {
 		return new User(objDto.getId(), objDto.getName(), objDto.getEmail());
 	}
